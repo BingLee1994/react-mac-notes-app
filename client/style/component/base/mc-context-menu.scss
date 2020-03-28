@@ -1,0 +1,63 @@
+.mac {
+  &-floating-menu {
+    $menuBorderRadius: 5px;
+    $dividerHeight: 1.5px;
+    $dividerMargin: 5px;
+    $dividerColor: rgba(0, 0, 0, 0.08);
+
+    $aniDuration: 0.35s;
+    $aniTimingFunc: ease;
+
+    list-style: none;
+    position: fixed;
+    z-index: 999;
+    transition: opacity 0.3s ease;
+    background-color: $transBgColor;
+    @include backdrop-filter($tranBgBlurEffect);
+    border: 1px solid var(--translucent-border-color);
+    box-shadow: $shadow;
+    border-radius: $menuBorderRadius;
+    padding: #{$menuBorderRadius} 0;
+    overflow: visible;
+    transition-duration: $aniDuration;
+    transition-timing-function: $aniTimingFunc;
+    margin: 0;
+
+    li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      padding: 0 20px;
+      font-size: $buttonFontSize;
+      position: relative;
+      white-space: nowrap;
+      cursor: default;
+    }
+
+    .list-item-selected,
+    .list-item:hover {
+      background-color: var(--accent-color) !important;
+      color: white !important;
+    }
+
+    .divider {
+      height: $dividerHeight;
+      background-color: $dividerColor;
+      margin: $dividerMargin 0;
+    }
+
+    .list-item-disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .sub-menu {
+      position: absolute;
+      left: calc(100% + 1px);
+      top: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

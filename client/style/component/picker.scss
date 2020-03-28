@@ -1,0 +1,19 @@
+.mc-picker-wrapper {
+    min-width: 200px;
+    position: fixed;
+    $pickerWindowBg: rgb(235,235,235);
+    z-index: 999;
+    box-shadow: $windowShadow;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+
+    .picker-content {
+        border: 1px solid var(--border-color);
+        border-top: none;
+        background-color: $pickerWindowBg;
+        padding: 10px;
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+        overflow: hidden;
+    }
+}

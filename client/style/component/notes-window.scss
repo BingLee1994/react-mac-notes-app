@@ -1,0 +1,72 @@
+.mc-notes-window {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 80%;
+  height: 80%;
+  border: 1px solid;
+  border-color: var(--translucent-border-color);
+  border-radius: $borderRadius;
+  overflow: hidden;
+  box-shadow: $windowShadow;
+
+  .window-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    & > * {
+      border-left: none;
+      border-right: none;
+    }
+
+    & > *:first-child {
+      border-top: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    & > *:last-child {
+      border-bottom: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & .panel-wrapper {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+
+      & .side-panel {
+        overflow-x: hidden;
+      }
+
+      & .middle-panel {
+        min-width: 260px;
+        box-sizing: border-box;
+        background-color: white;
+        overflow-y: auto;
+        border: {
+          left: 1px solid;
+          right: 1px solid;
+          color: var(--border-color-light);
+        };
+      }
+
+      & .side-panel, & .middle-panel {
+        flex: {
+          grow: 0;
+          shrink: 0;
+        }
+      }
+
+      & .content {
+        flex: 1;
+      }
+    }
+  }
+  .paper-bg {
+    background: url(../../images/paper-bg.png) repeat;
+    background-size: 350px 350px;
+  }
+}

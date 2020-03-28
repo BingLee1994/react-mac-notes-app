@@ -1,0 +1,42 @@
+.color-picker-dialog-wrapper {
+    @mixin outline {
+        box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+    }
+  .color-picker-wrapper {
+    position: relative;
+    overflow: hidden;
+    @include outline;
+    .cursor {
+      width: 9px;
+      height: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 5px;
+      position: absolute;
+      z-index: 100;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+  .color-info-wrapper {
+    .color-preview {
+      width: 20px;
+      height: 20px;
+      float: left;
+      @include outline;
+    }
+    .color-info {
+      text-align: center;
+      letter-spacing: 1;
+      text-transform: uppercase;
+      margin: 5px 0;
+      user-select: text !important;
+      &:last-of-type {
+          margin-bottom: 10px;
+      }
+    }
+    &::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  }
+}

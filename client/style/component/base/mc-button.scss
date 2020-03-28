@@ -1,0 +1,90 @@
+.mc {
+  &-button {
+    $widenButtonWidth: 80px;
+    @mixin emptyButton {
+      border-width: 1px;
+      border-style: solid;
+      display: inline-block;
+      overflow: hidden;
+      border-radius: $borderRadius;
+      margin: $marginX;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    $borderRadius: 5px;
+    $bgColor: linear-gradient(180deg, rgb(250, 250, 250), rgb(240, 240, 240));
+    -webkit-appearance: none;
+    $btnSelector: &;
+    $marginX: 0 4px;
+
+    @include emptyButton;
+    background: $bgColor;
+    box-sizing: border-box;
+    padding: $buttonPadding;
+    line-height: 1;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(163, 163, 163)
+      rgb(199, 199, 199);
+    font-size: $buttonFontSize;
+    outline: none;
+
+    &_widen {
+      min-width: $widenButtonWidth;
+    }
+
+    &_tinted {
+      background: var(--accent-color);
+      color: white !important;
+      &:active {
+          filter: brightness(.9);
+      }
+    }
+
+    &_disabled {
+      /*color: rgba(0,0,0,.4) !important;
+      background-color: var(--accent-color-on-blur) !important;*/
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: .3;
+    }
+
+    &:active, &_active {
+      background: rgb(230, 230, 230);
+      color: var(--text-color-primary);
+    }
+
+    &_selected {
+      background: rgb(105, 105, 105);
+      color: white;
+    }
+
+    &-group {
+      $dividerColor: rgb(221, 221, 221);
+
+      @include emptyButton;
+      border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(163, 163, 163)
+        rgb(199, 199, 199);
+
+      #{$btnSelector} {
+        border-radius: 0;
+        border: none;
+        margin: 0;
+        border-right: 1px solid $dividerColor;
+      }
+      #{$btnSelector}:last-of-type {
+        border-right: none;
+      }
+    }
+  }
+
+  &-option-button-wrapper {
+    flex-shrink: 0;
+  }
+}
+
+.dialog-button {
+  &:active {
+      background: var(--accent-color);
+      color: white !important;
+  }
+}

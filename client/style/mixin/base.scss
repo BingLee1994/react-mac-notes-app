@@ -1,0 +1,25 @@
+@mixin flex($dir, $align:initial, $justify:initial) {
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin flex-fixed-width($width: 0) {
+    flex: 0 0 $width;
+}
+
+@mixin backdrop-filter($effect:none) {
+    backdrop-filter: $effect;
+    -webkit-backdrop-filter: $effect;
+}
+
+@mixin adjust-layer-blur($size:10px) {
+    @include backdrop-filter(blur($size));
+}
+
+@mixin text-trim-ellipsis {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}

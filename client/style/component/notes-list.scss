@@ -1,0 +1,144 @@
+.mc-notes-list-wrapper {
+    $paddingH: 25px;
+    $paddingV: 10px;
+    height: 100%;
+    overflow-y: auto;
+
+    .list-item-selected, .list-item-focused {
+        &::after {
+            display: none;
+        }
+    }
+
+    & .err-message {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        opacity: .5;
+    }
+
+    .notes-list {
+        list-style: none;
+        margin: 0 !important;
+        padding: 0 !important;
+        & > li {
+            padding: #{$paddingV} #{$paddingH};
+            line-height: 1.5;
+            border-bottom: 1px solid var(--border-color-light);
+
+            p {
+                @include text-trim-ellipsis;
+            }
+
+            span, p {
+                cursor: default;
+            }
+
+            /*&::after {
+                content: '';
+                display: block;
+                height: 1px;
+                left: $paddingH;
+                right: 0;
+                background-color: var(--border-color-light);
+                position: absolute;
+                bottom: 0;
+            }*/
+            & .title {
+                font-weight: bold;
+            }
+            & .preview {
+                display: flex;
+                & .date {
+                    padding-right: 8px;
+                }
+            }
+        }
+
+        &_card {
+            $padding: 8px;
+            $singleLineHeight: 18px;
+            $cardWidth: 150px;
+            $cardWrapperWidth: $padding * 2 + $cardWidth;
+            display: flex;
+            flex-wrap: wrap;
+            min-width: $cardWrapperWidth * 1.5;
+            .list-item-selected, .list-item-focused {
+                .preview {
+                    & .card-wrapper {
+                        border: none;
+                        border-radius: 0;
+                    }
+                }
+            }
+            .list-item-selected {
+                .preview {
+                    & .card-wrapper {
+                        border-bottom: 1px solid rgba(0, 0, 0, .1);
+                    }
+                }
+            }
+            .list-item-focused {
+                .preview {
+                    & .card-wrapper {
+                        border-bottom: 1px solid rgba(255, 255, 255, .1);
+                    }
+                }
+            }
+            & > li {
+                width: $cardWrapperWidth;
+                min-height: 50px;
+                padding: 5px;
+                margin: 15px;
+                margin-right: 0;
+                border: none;
+                border-radius: 5px;
+                &::after {
+                    display: none;
+                }
+            }
+            & .title {
+                font-weight: bold;
+                display: none;
+            }
+            & .preview {
+                white-space: pre-wrap;
+                display: flex;
+                flex-direction: column;
+                & .card-wrapper {
+                    border: 1px solid;
+                    border-color: var(--border-color-light);
+                    order: 1;
+                    padding: $padding;
+                    box-sizing: border-box;
+                    width: $cardWrapperWidth;
+                    border-radius: 5px;
+                    height: calc( #{$cardWidth} * 3 / 4 );
+                    overflow: hidden;
+                    margin-bottom: 5px;
+                }
+                $cardContentSize: 1.5;
+                $shrink: 1 / $cardContentSize;
+                & .text {
+                    width: 100%;
+                    //width: $cardWidth * $cardContentSize;
+                    //transform: scale(#{$shrink});
+                    width: 100%;
+                    height: calc(100% - 5px);
+                    overflow: hidden;
+                    display: inline-block;
+                    transform-origin: left top;
+                    word-break: break-all;
+                    -webkit-text-size-adjust:none;
+                    font-size: 1.2rem;
+                }
+                & .date {
+                    padding-right: 0 !important;
+                    order: 2;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

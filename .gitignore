@@ -1,0 +1,8 @@
+# npm依赖包
+/node_modules
+
+# build后的文件
+/build
+
+# misc 
+.DS_Store

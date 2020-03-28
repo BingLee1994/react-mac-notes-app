@@ -1,0 +1,58 @@
+$transElementOpacity: .8;
+$accentColor: rgb(0, 99, 225);
+$translucentAccentColor: rgba(0, 99, 225, $transElementOpacity);
+$listItemSelectedBgColor: rgb(220,220,220);
+$translucentListItemSelectedBgColor: rgba(0,0,0,.1);
+$dialogBgColor: rgb(239,239,239);
+$colorRed: rgb(252, 98, 93);
+$colorRellow: rgb(254, 194, 65);
+$txtColorPrimary: #1a1a1a;
+$txtColorSecondary: rgb(125, 125, 125);
+$txtColorUnselect: #a0a0a0;
+$titleBarBg: linear-gradient(180deg, white, rgb(238, 238, 238) 5%, rgb(205, 205, 205));
+
+$txtSizeS: 1rem;
+$txtSizeN: 1.3rem;
+$txtSizeExLarge: 2.3rem;
+$borderRadius: 5px;
+$buttonHeight: 2.2rem;
+$buttonFontSize: 1.3rem;
+$buttonPadding: ($buttonHeight - $buttonFontSize) / 2;
+
+$tranBgBlurEffect: blur(20px) brightness(1.05);
+$transBgColor: rgba(237,237,237, $transElementOpacity);
+
+$borderColor: #ababab;
+$borderColorLight: rgb(233, 233, 233);
+$translucentBorderColor: rgba(0,0,0,.2);
+$bgColor: rgb(250, 250, 250);
+$translucentBgColor: rgba(250, 250, 250, $transElementOpacity);
+$shadow: 0px 0px 10px rgba(0,0,0,.3);
+$windowShadow: 0px 10px 20px rgba(0,0,0,.4);
+
+$titleBarBorderRadius: .5rem;
+$titleBarBorderColor: rgb(163, 163, 163);
+$titleBarPadding: 2px 8px;
+$titleBarTextColor: rgb(64,64,64);
+$windowActionButtonSize: 1.2rem;
+$windowActionButtonBorderRadius: $windowActionButtonSize / 2;
+$maxWindowActionWrapperWidth: 6rem;
+
+#app {
+    //TODO dark mode
+    --accent-color: #{$accentColor};
+    --translucent-accent-color: #{$translucentAccentColor};
+    --accent-color-on-blur: #{$listItemSelectedBgColor};
+    --translucent-accent-color-on-blur: #{$translucentListItemSelectedBgColor};
+    --txt-color-primary: #{$txtColorPrimary};
+    --txt-color-secondary: #{$txtColorSecondary};
+    --background-color-main: #{$bgColor};
+    --translucent-bg-color: #{$translucentBgColor};
+    --label-color-unselected: #{$txtColorUnselect};
+    --border-color: #{$borderColor};
+    --border-color-light: #{$borderColorLight};
+    --translucent-border-color: #{$translucentBorderColor};
+    --dialog-bg-color: #{$dialogBgColor};
+    --border-radius: #{$borderRadius};
+    --font-size-normal: #{$txtSizeN};
+}

@@ -1,0 +1,38 @@
+.mc-notes-folder-list-wrapper {
+  $paddingH: 20px;
+  $paddingV: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
+  .notes-folder-list {
+    cursor: default;
+    flex: 1;
+    padding: #{$paddingV} 0;
+    overflow: {
+      x: hidden;
+      y: auto;
+    }
+
+    & > .folder-list-item {
+      padding: 8px #{$paddingH};
+      padding-right: 15px;
+      line-height: 1;
+      display: flex;
+      justify-content: space-between;
+      .title {
+        flex: 1;
+      }
+      .numbers {
+        flex: 0;
+        padding-left: 5px;
+      }
+    }
+  }
+  .new-folder-button {
+    line-height: 1.5;
+    flex-shrink: 0;
+    padding: #{$paddingV} #{$paddingH};
+  }
+}

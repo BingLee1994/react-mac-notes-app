@@ -1,0 +1,121 @@
+@import "varibles.scss";
+@import "mixin/base.scss";
+
+html {
+  --webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  background-color: var(--background-color-main);
+}
+
+#app {
+  box-sizing: border-box;
+  @include flex(column);
+  height: 100%;
+  overflow: hidden;
+  background: url(../images/desktop.jpg) no-repeat center;
+  background-size: cover;
+  font-size: $txtSizeN;
+  color: var(--txt-color-primary);
+  .secondary-txt {
+    font-size: $txtSizeN;
+    color: var(--txt-color-secondary);
+  }
+
+  * {
+    -webkit-user-select: none;
+    font-family: "苹方-简", "华文细黑", "Heiti SC", "Myriad Pro", "黑体", "微软雅黑", Arial, Helvetica, sans-serif;
+  }
+
+  input,
+  text,
+  div[contenteditable] {
+    user-select: initial;
+  }
+
+  .list-item-focused {
+    * {
+      color: white !important;
+    }
+    background-color: var(--accent-color) !important;
+    color: white;
+  }
+
+  .list-item-selected {
+    background-color: var(--accent-color-on-blur);
+  }
+
+  .blur-bg {
+    background-color: var(--translucent-bg-color);
+    @include backdrop-filter($tranBgBlurEffect);
+    .list-item-focused {
+      background-color: var(--translucent-accent-color) !important;
+    }
+    .list-item-selected {
+      background-color: var(--translucent-accent-color-on-blur);
+    }
+  }
+
+  .secondary-text {
+    color: var(--txt-color-secondary);
+    * {
+      color: var(--txt-color-secondary);
+    }
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+}
+
+.unselect-txt,
+.placeholder-txt {
+  font-size: $txtSizeN;
+  color: var(--label-color-unselected);
+}
+
+.primart-txt {
+  font-size: $txtSizeN;
+  color: var(--txt-color-primary);
+}
+
+.flex-box_verticle {
+  display: flex;
+  flex-direction: column;
+  .content-wrapper {
+    flex: 1;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+.text-trim-ellipsis {
+  @include text-trim-ellipsis;
+}
+
+div,
+ul {
+  $scrollWidth:8px;
+  &::-webkit-scrollbar {
+    width: $scrollWidth;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: $scrollWidth/2;
+    background-color: rgba(85, 85, 85, 0.575);
+  }
+}
+
+@import "component/all.scss";
