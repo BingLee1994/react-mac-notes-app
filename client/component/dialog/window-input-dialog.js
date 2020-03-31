@@ -16,12 +16,9 @@ export default props => {
     let [positiveBtn, setButton] = useState({ ...positiveButton});
     return (
         <Dialog
+            {...props}
             onConfirm={() => {callFunc(props.onConfirm, value)}}
-            onCancel={props.onCancel}
-            negativeButton={props.negativeButton}
             positiveButton={positiveBtn}
-            icon={props.icon}
-            iconClass={props.iconClass}
             className={AppClassNames.dialog.inputboxDialog.wrapper}
         >
             <div className="message">

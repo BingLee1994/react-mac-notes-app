@@ -24,8 +24,8 @@ export default class OptionButton extends React.Component {
         document.removeEventListener('mousedown', this.closeOptionListener);
     }
 
-    onSelectItem = (optionData) => {
-        callFunc(this.props.onSelectOption, optionData);
+    onSelectItem = (optionData, e) => {
+        callFunc(this.props.onSelectOption, optionData, e);
         this.toggleMenu(null, true);
     }
 

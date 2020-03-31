@@ -3,12 +3,7 @@ import Dialog from './dialog';
 
 export default props => (
     <Dialog
-        onConfirm={props.onConfirm}
-        onCancel={props.onCancel}
-        negativeButton={props.negativeButton}
-        positiveButton={props.positiveButton}
-        icon={props.icon}
-        iconClass={props.iconClass}
+        {...props}
     >
         <div className="message">
             <p className="message-title bold">{props.messageTitle}</p>

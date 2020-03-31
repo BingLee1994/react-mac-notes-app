@@ -9,21 +9,24 @@ export default props => {
     let elDialogBody = useRef();
     useEffect(() => {
         setTimeout(() => {
-            try {
-                elDialogBody.classList.add(AppClassNames.dialog.show);
-            } catch (err) {
-                console.log(err);
-            }
+            elDialogBody.classList.add(AppClassNames.dialog.show);
         });
     });
 
-    let closeConfirm = isPositive => (_, data) => {
+    let closeConfirm = (isPositive, _, data) => {
         elDialogBody.classList.remove(AppClassNames.dialog.show);
+        let callback = isPositive? props.onConfirm: props.onCancel;
+        callFunc(callback, data);
         setTimeout(() => {
-            let callback = isPositive? props.onConfirm: props.onCancel;
-            callFunc(callback, data);
+            callFunc(props.onCloseComplete);
         }, TRANSITION_DURATION*1000);
     };
+
+    let onClickButton = isPositive => (e, data) => {
+        closeConfirm(isPositive, e, data);
+    };
+
+    callFunc(props.__forceCloce__, closeConfirm);
 
     return (
         <div className={`${AppClassNames.dialog.wrapper} ${props.className?props.className: ''}`}>
@@ -33,28 +36,28 @@ export default props => {
                     ref={el => elDialogBody=el}
                     style={{transitionDuration: TRANSITION_DURATION+'s'}}
                 >
-                    {(props.icon || props.iconClass) && (
+                    {/*if*/ (props.icon || props.iconClass) &&
                         <div className={`icon ${props.iconClass||''}`}>
                             {props.icon}
                         </div>
-                    )}
+                    }
                     <div className="content-wrapper">
                         {props.children}
                         <div className="dialog-button-wrapper">
-                            { props.negativeButton &&
+                            {/*if*/ props.negativeButton &&
                                 <DialogButton
                                     data={props.negativeButton}
-                                    onClick={closeConfirm()}
+                                    onClick={onClickButton()}
                                     disabled={props.negativeButton.disabled}
                                 >
                                     {props.negativeButton.text || props.negativeButton}
                                 </DialogButton>
                             }
-                            { props.positiveButton &&
+                            {/*if*/ props.positiveButton &&
                                 <DialogButton
                                     positive
                                     data={props.positiveButton}
-                                    onClick={closeConfirm(true)}
+                                    onClick={onClickButton(true)}
                                     disabled={props.positiveButton.disabled}
                                 >
                                     {props.positiveButton.text || props.positiveButton}
