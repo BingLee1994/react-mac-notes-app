@@ -43,13 +43,15 @@ export default class OptionButton extends React.Component {
                 ref="optionButtonWrapper"
                 className="mc-option-button-wrapper"
                 style={{display: 'inline-block'}}
+                title={this.props.title} 
             >
                 <span ref="button">
                     <Button
+                        className="option-button"
                         onClick={this.toggleMenu}
                         active={this.state.open}
                         onRef={ref => this.button = ref}
-                    >{this.props.title || this.props.children}</Button>
+                    >{this.props.children}</Button>
                 </span>
                 <FloatingMenu
                     menuItems={this.props.options}
