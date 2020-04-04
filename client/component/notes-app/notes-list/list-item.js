@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppClassNames } from '../../../utils/app-ui-prop';
 import { callFunc, formatYMD, _if } from '../../../utils';
+import t from '../../../i18n';
 
 const { notesList: NotesListClassNames } = AppClassNames;
 
@@ -28,7 +29,7 @@ export default React.memo(
                         AppClassNames.common.text.primary,
                         AppClassNames.common.text.bold].join(' ')
                 }>
-                    {model.title || '新建备忘录'}
+                    {model.title || t.emptyNoteTitle}
                 </p>
 
                 <div className={NotesListClassNames.preview.wrapper}>
@@ -50,7 +51,7 @@ export default React.memo(
                     {/*if*/ cardView &&
                         <div className={NotesListClassNames.preview.cardWrapper}>
                             <span className={`${NotesListClassNames.preview.text}`}>
-                                {(model.title || '新建备忘录') + '\n' + model.previewText}
+                                {(model.title || t.emptyNoteTitle) + '\n' + model.previewText}
                             </span>
                         </div>
                     }

@@ -7,20 +7,22 @@ import { showInputDialog, showConfirmDialog, showAlertDialog } from '../notes-wi
 import ContextMenuTrigger from '../../context-menu';
 import { addOnBlurListener, _if } from '../../../utils';
 import ListItem from './list-item';
+import t, { i18nSync } from '../../../i18n';
 
 const FolderClassNames = AppClassNames.notesFolder;
 
+@i18nSync
 @asSubscriber
 @addOnBlurListener('mouseup', 'isListBlurred')
 //@classNames('notesFolder')
 class NotesFolder extends React.PureComponent {
     ctxMenu = [
         {
-            text: "重命名",
+            text: t.reName,
             event: NotesFolderEvent.rename
         },
         {
-            text: "删除",
+            text: t.delete,
             event: NotesFolderEvent.delete
         },
     ]
@@ -56,7 +58,7 @@ class NotesFolder extends React.PureComponent {
 
     async deleteFolder() {
         try {
-            await showConfirmDialog("确定删除吗？", "将会永久删除此文件下的所有内容！");
+            await showConfirmDialog(t.message.deleteFolderAlertTitle, t.message.deleteFolderAlert);
             let { currentFolder } = this;
             let response = await server.deleteFolder(currentFolder.id);
             this.setState({
@@ -85,13 +87,13 @@ class NotesFolder extends React.PureComponent {
 
     validateFolderName(name) {
         if (this.state.listData.some(each => each.folderName === name)) {
-            throw new Error('文件名已经存在！');
+            throw new Error(t.message.nameExist);
         }
     }
 
     createNewFolder = () => {
         showInputDialog({
-            message: '请输入新的文件夹名称',
+            message: t.message.plsInputFolderName,
                 required: true
         })
         .then(folderName => {
@@ -152,7 +154,7 @@ class NotesFolder extends React.PureComponent {
                 onSelectMenuItem={this.selectCtxMenu}
                 className={FolderClassNames.wrapper}
             >
-                <div className={FolderClassNames.list + ' blur-bg'}>
+                <div className={FolderClassNames.list}>
                     {_if(listData.length > 0,
                         listData.map((each, index) => (
                             <ListItem
@@ -168,13 +170,13 @@ class NotesFolder extends React.PureComponent {
                     )}
 
                     {_if(listData.length === 0,
-                        <div className="mc-notes-folder-empty">没有笔记</div>
+                        <div className="folder-empty">t.emptyFolder</div>
                     )}
                 </div>
                 <div
-                    className={`${AppClassNames.common.text.trimEllipsis} ${FolderClassNames.newButton} blur-bg`}
+                    className={[AppClassNames.common.text.trimEllipsis, FolderClassNames.newButton].join(' ')}
                     onClick={this.createNewFolder}
-                >新建文件夹</div>
+                >+ 新建文件夹</div>
             </ContextMenuTrigger>
         );
     }
