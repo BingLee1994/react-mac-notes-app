@@ -6,11 +6,13 @@ import ConnectedNotesEditor from './notes-editor/index';
 import ConnectedNotesList from './notes-list/notes-list';
 import ConnectedNotesFolder from './notes-folder/notes-folder';
 import Resizer from './resizer';
-import ConfirmDialog from '../dialog/window-confirm';
+import ConfirmDialog from '../dialog/window-confirm-dialog';
 import InputDialog from '../dialog/window-input-dialog';
+import ProgressBarDialog from '../dialog/window-progress-bar-dialog';
 import server, { SimpleGet, service } from '../../api';
 import { isNone, callFunc, isString, isPlainObject } from '../../utils';
 import Dialog from '../dialog/dialog';
+import t from '../../i18n';
 
 const WINDOW_CLASS = 'mc-notes-window';
 const CONFIRM_WRAPPER_CLASS = 'confirm-wrapper';
@@ -60,6 +62,7 @@ export default class NotesWindow extends Window {
 
                     <SimpleGet
                         url={service.preferences.notesWindow}
+                        loading={<div className="loading"></div>}
                     >{
                         (_, response) => {
                             let sidePanelWidth = "", middlePanelWidth = "";
@@ -73,9 +76,10 @@ export default class NotesWindow extends Window {
                                         className="side-panel"
                                         style={{width: sidePanelWidth, flexBasis: sidePanelWidth}}
                                     >
+                                        <div className="abs-fill-parent blur-bg" style={{zIndex: -1}}></div>
                                         <ConnectedNotesFolder />
                                     </div>
-                                    <Resizer name="123" width={0} onResized={this.savePanelWidth('sidePanelWidth')} />
+                                    <Resizer width={0} onResized={this.savePanelWidth('sidePanelWidth')} />
                                     <div className="middle-panel paper-bg"
                                         style={{width: middlePanelWidth, flexBasis: middlePanelWidth}}
                                     >
@@ -98,16 +102,23 @@ function showDialog(component) {
         return Promise.reject();
     }
     return new Promise((resolve, reject) => {
-        let hide = () => { ReactDOM.unmountComponentAtNode(elConfirmWrapper); dialogIsShowing = false; };
+        let hide = () => { 
+            ReactDOM.unmountComponentAtNode(elConfirmWrapper);
+            dialogIsShowing = false;
+        };
 
         let newProps = {
             onConfirm() {
                 callFunc(component.props.onConfirm, ...arguments);
-                resolve(arguments[0]); hide();
+                resolve(arguments[0]);
             },
             onCancel() {
                 callFunc(component.props.onCancel, ...arguments);
-                reject(arguments[0]); hide();
+                reject(arguments[0]);
+            },
+            onCloseComplete() {
+                callFunc(component.props.onCloseComplete, ...arguments);
+                hide();
             }
         }
         let dialog = React.cloneElement(component, newProps);
@@ -135,8 +146,8 @@ export function showConfirmDialog() {
         <ConfirmDialog
             messageTitle={option.title}
             messageContent={option.message}
-            positiveButton={option.positiveButton || '确定'}
-            negativeButton={option.negativeButton || '取消'}
+            positiveButton={option.positiveButton || t.confirm}
+            negativeButton={option.negativeButton || t.cancel}
         >
         </ConfirmDialog>
     );
@@ -145,7 +156,7 @@ export function showConfirmDialog() {
 export function showAlertDialog(message) {
     return showDialog(
         <Dialog
-            positiveButton="确定"
+            positiveButton={t.confirm}
         >
             <div className="message">
                 <p className="message-title">{message}</p>
@@ -159,10 +170,24 @@ export function showInputDialog(option) {
         <InputDialog
             placeHolder={option.placeHolder}
             message={option.message}
-            positiveButton={option.positiveButton || '确定'}
-            negativeButton={option.negativeButton || '取消'}
+            positiveButton={option.positiveButton || t.confirm}
+            negativeButton={option.negativeButton || t.cancel}
             required = {option.required}
         >
         </InputDialog>
+    );
+}
+
+export function showProgressBar(title, initialVal = 0, maxValue=1, updater, interval, negativeButton=t.cancel) {
+    return showDialog(
+        <ProgressBarDialog
+            progress={initialVal}
+            title={title}
+            updater={updater}
+            negativeButton={negativeButton}
+            maxValue={maxValue}
+            interval={interval}
+        >
+        </ProgressBarDialog>
     );
 }
