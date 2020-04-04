@@ -6,7 +6,7 @@ export default function() {
     return (
         <div>
             <Suspense fallback={SimpleLoading}>
-            <NotesWindow></NotesWindow>
+                <NotesWindow></NotesWindow>
             </Suspense>
         </div>
     )
