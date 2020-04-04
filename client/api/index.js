@@ -5,6 +5,7 @@ import { isNone, callFunc, mapObj, isString, isFunc } from '../utils';
 
 let { host, port, serviceName } = Env;
 const timeout = 5 * 1000;
+const baseURL = `http://${host}:${port}`;
 
 let concatUrl = function(obj, prefix) {
     return mapObj(obj, val => {
@@ -14,6 +15,9 @@ let concatUrl = function(obj, prefix) {
 }
 
 let service = {
+    upload: concatUrl({
+        image: '/img'
+    }, '/upload'),
     notes: concatUrl({
         list: '/list',
         text: '/text',
@@ -33,7 +37,7 @@ let service = {
 };
 
 const api = axios.create({
-    baseURL: `http://${host}:${port}/${serviceName}`,
+    baseURL: [baseURL, serviceName].join('/'),
     timeout: timeout
 });
 
@@ -125,6 +129,22 @@ const server = {
     },
     post(url, custOption, onCancelToken) {
         return this._makeRequest('post', url, custOption, onCancelToken);
+    },
+
+    uploadImage(file, onUploadProgress, onCancelToken) {
+        let data = new FormData();
+        console.log(file, file.name);
+        data.append("file", file, file.name);
+        return this.post(
+            service.upload.image,
+            {
+                onUploadProgress,
+                data,
+                timeout: 60 * 1000,
+                headers: { "content-type": "multipart/form-data" }
+            },
+            onCancelToken
+        );
     }
 }
 
@@ -174,5 +194,5 @@ export class SimpleGet extends React.Component {
 
 window.server = server;
 
-export { api, service };
+export { api, service, baseURL };
 export default server;
