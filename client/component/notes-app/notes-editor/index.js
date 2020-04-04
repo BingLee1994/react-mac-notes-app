@@ -37,8 +37,8 @@ export default asSubscriber(class NotesEditor extends React.PureComponent {
         let openTabItm = this.contextMenu.find(i => i === openInNewTabMenuItm);
         if (target.tagName === 'A') {
             let { href } = target;
+            openInNewTabMenuItm.href = href;
             if (href && isNone(openTabItm)) {
-                openInNewTabMenuItm.href = href;
                 this.contextMenu.push(openInNewTabMenuItm);
             }
         } else {
