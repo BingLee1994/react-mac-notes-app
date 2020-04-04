@@ -10,7 +10,7 @@ import { NotesToolbarEvent as ToolbarEvent, NotesEditorEvent } from './events'
 import EditorEvent from './events/editor';
 import { showColorPicker } from '../picker/color-picker';
 import Icon, { IconNames } from '../icon';
-import { showProgressBar } from '../notes-app/notes-window';
+import { showProgressBar, showInputDialog } from '../notes-app/notes-window';
 import server, { baseURL } from '../../api';
 import t, { i18nSync } from '../../i18n';
 
@@ -143,6 +143,20 @@ class NotesToolBar extends React.Component {
         .catch(() => callFunc(cancelRequest));
     };
 
+    onClickToInsertLink = async _ => {
+        try {
+            let curRange = document.getSelection().getRangeAt(0);
+            let link = await showInputDialog({
+                message: t.message.plsInputLink,
+                required: true
+            });
+            document.getSelection().removeAllRanges();
+            document.getSelection().addRange(curRange);
+            this.dispatch(EditorEvent.createLink, link);
+        } catch (err) {
+        }
+    }
+
     onClickUploadImage = _ => {
         this.elFileUploadBtn.current && this.elFileUploadBtn.current.click();
     };
@@ -249,8 +263,8 @@ class NotesToolBar extends React.Component {
                     <Icon name={IconNames.insertHr} />
                 </Button>
 
-                <Button title={t.title.addLink} data={{command: EditorEvent.createLink, data: 'https://www.baidu.com'}}
-                    onClick={this.dispatchEditorEventOnClick}
+                <Button title={t.title.addLink}
+                    onClick={this.onClickToInsertLink}
                 >
                     <Icon name={IconNames.link} />
                 </Button>
