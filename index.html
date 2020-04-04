@@ -13,6 +13,9 @@
 				alert('请使用Chrome或者类Chrome内核浏览器打开此网站（'+location.href+'）');
 				window.close();
 			}
+			if (window.navigator.userAgent.indexOf('mac os') > -1) {
+				alert('此应用中的元素，包括右键菜单，均为高仿的html元素，并非系统元素，建议您在windows系统中体验！');
+			}
 		</script>
 	</head>
 	<body class="app">
