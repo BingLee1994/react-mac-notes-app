@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import TitleBar from '../title-bar/simple-title-bar';
-import { callFunc, enableSimpleDrag } from '../../utils';
+import { callFunc, enableSimpleDrag, getTranslate } from '../../utils';
 
 export default function(props) {
     let container = useRef();
@@ -10,8 +10,9 @@ export default function(props) {
         let remove = enableSimpleDrag(
             titleBar,
             () => {
-                baseX = curX;
-                baseY = curY;
+                let translate = getTranslate(container);
+                baseX = translate.x;
+                baseY = translate.y;
             },
             (disX, disY) => {
                 curX = baseX + disX;
@@ -20,8 +21,8 @@ export default function(props) {
             }
         );
 
-        return _ => remove();
-    },[]);
+        return _ => { remove(); }
+    });
     return (
         <div className="mc-picker-wrapper"
             ref={el => container = el}
