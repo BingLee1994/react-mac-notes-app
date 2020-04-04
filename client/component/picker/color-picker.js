@@ -96,16 +96,16 @@ class ColorPicker extends React.Component {
     //TODO 做成canvas component
     pickColor = e => {
         if (!this.state.canPickColor) return;
-        let { nativeEvent: { layerX, layerY } } = e;
-        this._pickAndMoveCursor(layerX, layerY, e.target, this.refs.colorCursor);
+        let { nativeEvent: { offsetX, offsetY } } = e;
+        this._pickAndMoveCursor(offsetX, offsetY, e.target, this.refs.colorCursor);
         this.drawColorBox(rgb(this.state.selectedRGB));
     };
 
     //TODO 做成canvas component
     pickBrightness = e => {
         if (!this.state.canPickBrightness) return;
-        let { nativeEvent: { layerX, layerY } } = e;
-        this._pickAndMoveCursor(layerX, layerY, e.target, this.refs.brightnessCursor);
+        let { nativeEvent: { offsetX, offsetY } } = e;
+        this._pickAndMoveCursor(offsetX, offsetY, e.target, this.refs.brightnessCursor);
     };
 
     //TODO 做成canvas component
@@ -177,11 +177,12 @@ class ColorPicker extends React.Component {
                         <canvas
                             width={ColorBarWidth}
                             height={ColorBarHeight}
+                            style={{position: 'relative'}}
                             ref="colorBar"
                             onMouseDown={e => {
                                 this.refs.colorCursor.style.display = 'block';
                                 this.state.canPickColor = true;
-                                this.pickColor(e)
+                                this.pickColor(e);
                             }}
                         ></canvas>
                     </div>
@@ -190,6 +191,7 @@ class ColorPicker extends React.Component {
                         <canvas
                             width={ColorBarWidth}
                             height={ColorBarWidth}
+                            style={{position: 'relative'}}
                             ref="colorBox"
                             onMouseDown={e => {
                                 this.refs.brightnessCursor.style.display = 'block';
@@ -223,7 +225,10 @@ class ColorPicker extends React.Component {
 export default ColorPicker;
 
 export function showColorPicker(title, x=0, y=0) {
-    let el = document.createElement('div');
+    let el = document.createElement('div'),
+        style = ['position:fixed', 'top:0', 'left:0', 'right:0', 'bottom:0'];
+    el.setAttribute('style', style.join(';'));
+
     function unmount () {
         ReactDOM.unmountComponentAtNode(el);
         document.body.removeChild(el);
