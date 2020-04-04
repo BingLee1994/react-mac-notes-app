@@ -1,8 +1,9 @@
 
 let { isString, uuid, replaceSpace, filterPureTextFromHTML, pureObj, isNumber, isPlainObj } = require('../../utils');
-let FieldValidator = require('../../utils/model');
+const FieldValidator = require('../../utils/model');
+const cheerio = require('cheerio');
 
-const TITLE_LENGTH = 15;
+const TITLE_LENGTH = 20;
 const PREVIEW_LENGTH = 100;
 
 const validator = new FieldValidator({
@@ -27,7 +28,7 @@ const validator = new FieldValidator({
 })
 
 function NoteList() {
-    //默认值
+    //???
     let fiels = {
         id: uuid(5),
         folderId: "",
@@ -107,15 +108,16 @@ NoteList.prototype = {
 }
 
 NoteList.parsePreviewText = function(html) {
-    debugger;
+    /* legacy
     html = replaceSpace(html, ' ').trim();
     pureText = filterPureTextFromHTML(html);
     let title = pureText.substr(0, TITLE_LENGTH),
         previewText = pureText.substr(TITLE_LENGTH, PREVIEW_LENGTH);
-    let matchedTag = ['<p>', '<h1>', '<h2>', '<h3>', '<h4>'].find(t => html.startsWith(t));
+    let matchedTag = ['<p ', '<h1 ', '<h2 ', '<h3 ', '<h4 '].find(t => html.startsWith(t));
     if (matchedTag) {
-        matchedTag = matchedTag.replace('<', '').replace('>', '');
-        let pattern= `<${matchedTag}>(.*)</${matchedTag}>`;
+        matchedTag = matchedTag.replace('<', '').replace('>', '').trim();
+        let pattern= `<${matchedTag}.*?>(.*)</${matchedTag}>`;
+        console.log(pattern);
         let reg = new RegExp(pattern);
         var res = reg.exec(html);
         if (res && res[1]) {
@@ -124,6 +126,27 @@ NoteList.parsePreviewText = function(html) {
             previewText = filterPureTextFromHTML(html.substr(res[0].length))
                 .substr(0,PREVIEW_LENGTH)
                 .trim();
+        }
+    }
+    return {
+        title, previewText
+    }*/
+    debugger
+    html = html.trim();
+    let title = html.substr(0, TITLE_LENGTH),
+        previewText = html.substr(TITLE_LENGTH, PREVIEW_LENGTH);
+    let matchedTag = ['<div', '<img', '<p', '<h1', '<h2', '<h3', '<h4'].find(t => html.startsWith(t));
+    if (matchedTag) {
+        matchedTag = matchedTag.replace('<', '').trim();
+        let $ = cheerio.load(html,{decodeEntities: false})(matchedTag);
+        let text = $.html().trim();
+        title = replaceSpace(filterPureTextFromHTML(text), ' ').substr(0, TITLE_LENGTH);
+        previewText = filterPureTextFromHTML(html)
+            .substr(title.length, html.length)
+            .substr(0,PREVIEW_LENGTH)
+            .trim();
+        if (matchedTag === 'img') {
+            title = '[图片]'
         }
     }
     return {

@@ -2,7 +2,7 @@
 let { isString, uuid, isNumber, isPlainObj, pureObj } = require('../../utils');
 let FieldValidator = require('../../utils/model');
 
-const validator = new FieldValidator({
+const validators = new FieldValidator({
     folderName(val) {
         if (!isString(val)) throw new Error('The folder name shoule be a valid string!');
     },
@@ -28,9 +28,9 @@ function NoteFolder() {
     if (isPlainObj(arguments[0])) {
         fiels = arguments[0];
     } else {
-        fiels.folderName = arguments[0];
+        fiels.folderName = arguments[0] || "默认文件夹";
     }
-    validator.validate(fiels);
+    validators.validate(fiels);
     Object.assign(this, fiels);
 }
 
@@ -45,12 +45,12 @@ NoteFolder.prototype = {
         return this.toTable();
     },
     setFolderName(val) {
-        let folderValidator = validator.getValidator('folderName');
+        let folderValidator = validators.getValidator('folderName');
         folderValidator.validate(val);
         this.folderName = val;
     },
     setCount(val) {
-        let validator = validator.getValidator('count');
+        let validator = validators.getValidator('count');
         validator.validate(val);
         this.count = val;
     },
@@ -65,6 +65,11 @@ NoteFolder.prototype = {
     },
     getId() {
         return this.id;
+    },
+    setId(val) {
+        let validator = validators.getValidator('id');
+        validator.validate(val);
+        this.id = val;
     }
 }
 

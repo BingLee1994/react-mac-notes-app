@@ -35,6 +35,7 @@ DB.prototype = {
                 this._cachedTabel = JSON.parse(data);
                 return true;
             } catch (reason) {
+                this._cachedTabel = [];
                 console.log(reason); return false;
             }
         } else {

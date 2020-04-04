@@ -16,7 +16,7 @@ module.exports = {
             row.count = dbUtil.noteList.count({ folderId: row.id });
         });
 
-        res.send(folders);
+        res.send(folders||[]);
     },
 
     deleteFolder(req, res) {
@@ -27,7 +27,8 @@ module.exports = {
                 let latestList = dbUtil.noteFolder.queryAll(row => {
                     row.count = dbUtil.noteList.count({ folderId: row.id });
                 });
-                dbUtil.noteFolder.commit().then(() => res.send(latestList));
+                dbUtil.noteList.delete({folderId: id});
+                dbUtil.noteFolder.commit().then(() => res.send(latestList||[]));
             } else {
                 res.status(500).send('id Not Found');
             }
@@ -118,11 +119,16 @@ module.exports = {
     create(req, res) {
         let { folderId } = req.params || {};
         if (!isNone(folderId)) {
-            debugger;
             let note = new NoteList();
             note.setFolderId(folderId);
             dbUtil.noteList.insert(note);
             dbUtil.noteText.saveText(note.getId(), '');
+            if (!dbUtil.noteFolder.query(folderId)) {
+                let noteFolder = new NoteFolder();
+                noteFolder.setId(folderId);
+                dbUtil.noteFolder.insert(noteFolder);
+                dbUtil.noteFolder.commit();
+            }
             dbUtil.noteList.commit().then(() => {
                 let latestList = dbUtil.noteList.queryAll({ folderId });
                 res.send(latestList);
