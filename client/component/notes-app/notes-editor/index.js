@@ -1,5 +1,5 @@
 import React from 'react';
-import { callFunc, isNone, formatYMDHM, debounce } from '../../../utils';
+import { callFunc, isNone, formatYMDHM, debounce, remodeItemAtIdx } from '../../../utils';
 import ContextMenuTriggerWrapper from '../../context-menu';
 import editorContextMenu from './notes-ctx-menu-items';
 import { asSubscriber } from '.././../evented';
@@ -11,10 +11,14 @@ const EditorClassNames = AppClassNames.noteEditor;
 let docExec = (cmdName, extraData) => document.execCommand(cmdName, false, extraData);
 let getSelection = () => document.getSelection();
 
-const disabledFeature = ['enableObjectResizing', 'editing', 'notEditing'];
+const disabledFeature = ['selectionChange', 'enableObjectResizing', 'editing', 'notEditing'];
+
+const COMMAND_OPEN_LINK = Symbol();
+const openInNewTabMenuItm = { text: '在新窗口打开链接', command: COMMAND_OPEN_LINK }
 
 export default asSubscriber(class NotesEditor extends React.PureComponent {
     editor = null;
+    editorDomObserver = null;
     contextMenu = editorContextMenu;
 
     constructor(props) {
@@ -28,30 +32,114 @@ export default asSubscriber(class NotesEditor extends React.PureComponent {
         this.handleTextChange = debounce(this.handleTextChange, 300);
     }
 
+    onWillOpenCtxMenu = e => {
+        let { target } = e;
+        let openTabItm = this.contextMenu.find(i => i === openInNewTabMenuItm);
+        if (target.tagName === 'A') {
+            let { href } = target;
+            if (href && isNone(openTabItm)) {
+                openInNewTabMenuItm.href = href;
+                this.contextMenu.push(openInNewTabMenuItm);
+            }
+        } else {
+            remodeItemAtIdx(this.contextMenu, i => i === openInNewTabMenuItm);
+        }
+    };
+
     onSelectContextMenu = itm => {
+        if (itm.command === COMMAND_OPEN_LINK) {
+            window.open(itm.href);
+            return;
+        }
         this._exec(itm.command, itm.data||'');
     }
 
     _exec(command, data) {
-        console.log(command);
         let next = (c, d) => { docExec(c, d) };
-        this._beforeExec(command, data, next);
+        this._preValidate(command, data, next);
     }
 
-    _beforeExec(command, data, next) {
+    _preValidate(command, data, next) {
         let selection = getSelection();
-        //console.log(selection);
-        //console.log(command, data);
         next(command, data);
     }
 
-    /*shouldComponentUpdate() {
-        return false;
-    }*/
+    changeImageSize(e) {
+        let elImg = e.currentTarget || e.target;
+        let size = parseInt(elImg.dataset['size']) || 0;
+        if (size === 0) {
+            elImg.style.width = 'initial';
+        }
+
+        if (size === 1) {
+            elImg.style.width = 'calc(50% - 10px)';
+        }
+
+        if (size === 2) {
+            elImg.style.width = 'calc(100% - 10px)';
+        }
+
+        elImg.dataset['size'] = (size + 1) % 3;
+        this.dispatch(NotesEditorEvent.save, this.editor.innerHTML);
+    }
+
+    _handleEditorDomChange(mutationsList) {
+        for(var mutation of mutationsList) {
+            if (mutation.type == 'childList') {
+                let addedNodes = mutation.addedNodes;
+                setTimeout(() => {
+                    let onClickImge = debounce(this.changeImageSize.bind(this), 100);
+
+                    function addImageClickListener(nodeList) {
+                        if (isNone(nodeList) || nodeList.length < 1) {
+                            return;
+                        }
+                        [].forEach.call(nodeList, eachNode => {
+                            if (eachNode.nodeType !== 1)  return;
+                            if (eachNode.tagName === 'IMG') {
+                                !eachNode.onclick && (eachNode.onclick = onClickImge);
+                            } else {
+                                let elImgsChildren = eachNode.querySelectorAll('img');
+                                addImageClickListener(elImgsChildren);
+                            }
+                        })
+                    }
+
+                    addImageClickListener(addedNodes);
+
+                })
+            }
+        }
+    }
+
+    enableEditorDomObserver() {
+        if (!isNone(this.editor)) {
+            let config = {
+                childList: true,
+                subtree: true
+            };
+
+            let cb = this._handleEditorDomChange.bind(this);
+            this.editorDomObserver = new MutationObserver(cb);
+            this.editorDomObserver.observe(this.editor, config);
+        }
+    }
+
+    disableEditorDomObserver() {
+        if (!isNone(this.editor) && !isNone(this.editorDomObserver)) {
+            this.editorDomObserver.disconnect();
+        }
+    }
 
     componentDidMount() {
         this._subscribe();
-        //this.startAutoSaveTimer();
+        this.enableEditorDomObserver();
+        document.addEventListener('click', this.enableSelectionObserver);
+    }
+
+    componentWillUnMount() {
+        this.disableEditorDomObserver();
+        document.removeEventListener('click', this.enableSelectionObserver);
     }
 
     getNote = async event => {
@@ -103,7 +191,6 @@ export default asSubscriber(class NotesEditor extends React.PureComponent {
     }
 
     handleTextChange = html => {
-        //console.log('saving...')
         this.dispatch(NotesEditorEvent.save, html);
     }
 
@@ -111,11 +198,11 @@ export default asSubscriber(class NotesEditor extends React.PureComponent {
         return (
             <ContextMenuTriggerWrapper
                 menuItems={this.contextMenu}
+                onWillOpenMenu={this.onWillOpenCtxMenu}
                 onSelectMenuItem={this.onSelectContextMenu}
                 className={`${EditorClassNames.wrapper} ${this.props.className || ''}`}
             >
-                {
-                    this.state.date &&
+                {/*if*/ (this.state.date) &&
                     <p className={`${EditorClassNames.date} ${AppClassNames.common.text.secondary}`}>
                         {formatYMDHM(this.state.date)}
                     </p>
@@ -125,12 +212,13 @@ export default asSubscriber(class NotesEditor extends React.PureComponent {
                         this.editor = el;
                         callFunc(this.props.onRef, el);
                     }}
+                    spellCheck={false}
                     onInput={this.onTextChange}
                     contentEditable = {!this.state.disable}
                     suppressContentEditableWarning={true}
                     dangerouslySetInnerHTML={{__html: this.state.text}}
-                    onFocus={e => this.dispatch(NotesEditorEvent.editing, e)}
-                    onBlur={e => this.dispatch(NotesEditorEvent.notEditing, e)}
+                    onFocus={e => {}}
+                    onBlur={e => {}}
                     className={EditorClassNames.text}
                 ></div>
             </ContextMenuTriggerWrapper>

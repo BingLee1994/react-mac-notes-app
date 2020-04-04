@@ -31,7 +31,8 @@ const EditorEvent = {
     unLink: "unlink", //删除链接,
     editing: 'focused',
     notEditing: 'blur',
-    save: 'save-note'
+    save: 'save-note',
+    selectionChange: 'selection-change'
 };
 
 export default EditorEvent;
