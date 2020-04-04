@@ -170,7 +170,7 @@ class NotesFolder extends React.PureComponent {
                     )}
 
                     {_if(listData.length === 0,
-                        <div className="folder-empty">t.emptyFolder</div>
+                        <div className="folder-empty">{t.emptyFolder}</div>
                     )}
                 </div>
                 <div
