@@ -1,4 +1,4 @@
-let app = document.getElementById('app');
+let app = document.querySelector('.app');
 let appCss = getComputedStyle(app);
 
 let propNameMap = {
