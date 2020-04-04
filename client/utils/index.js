@@ -69,8 +69,8 @@ export function enableSimpleDrag(el, onStart, onDrag, onCancel) {
     }
 
     let cancel = e => {
-        canDrag = false;
-        if (e.target === element) {
+        if (canDrag) {
+            canDrag = false;
             callFunc(onCancel, e);
         }
     };
@@ -248,4 +248,30 @@ export function filterPureTextFromHTML(html, shouldTrim) {
     let result = html.replace(/<[^>]*>|/g,"");
     result = shouldTrim? result.replace(/[\r\n]/g, ' ').replace(/\ +/g, ' ') : result
     return result;
+}
+
+export function getTranslate(el) {
+    let result = { x:0, y:0 };
+    if (el && el.nodeType === 1) {
+        let transform = getComputedStyle(el).transform;
+        transform = transform.split(',');
+        result.x = parseInt(transform[transform.length - 2]);
+        result.y = parseInt(transform[transform.length - 1]);
+    }
+    return result;
+}
+
+export function remodeItemAtIdx(arrayLike, cb) {
+    let i = 0, length = arrayLike.length;
+    for (; i < length; i++) {
+        let shouldRemove = false;
+        if (isFunc(cb)) {
+            if(cb(arrayLike[i], i)) {
+                shouldRemove = true;
+            }
+        } else if (arrayLike[i] === cb) {
+            shouldRemove = true;
+        }
+        shouldRemove && [].splice.call(arrayLike, i, 1); 
+    }
 }
