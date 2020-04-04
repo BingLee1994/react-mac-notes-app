@@ -122,12 +122,12 @@ export function formatYMDHM(val) {
     let minutes = date.getMinutes(), hour = date.getHours();
     minutes = minutes< 10? '0'+minutes: minutes;
     hour = hour< 10? '0'+hour: hour;
-    return `${date.getFullYear()}年${date.getMonth()}月${date.getDate()}日 ${hour}:${minutes}`
+    return `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日 ${hour}:${minutes}`
 }
 
 export function formatYMD(val, divider='/') {
     let date = new Date(val);
-    return [date.getFullYear(), date.getMonth(), date.getDate()].join(divider)
+    return [date.getFullYear(), (date.getMonth()+1), date.getDate()].join(divider)
 }
 
 export function classNames(comName) {
