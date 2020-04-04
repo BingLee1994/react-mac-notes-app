@@ -72,11 +72,11 @@ export default class FloatingMenu extends React.Component {
         }
     }
 
-    onClickItem = (_, clickedMenuItem) => {
+    onClickItem = (e, clickedMenuItem) => {
         if (!clickedMenuItem.disabled &&
             !clickedMenuItem.divider &&
             !clickedMenuItem.hasSubMenu) {
-            callFunc(this.props.onSelectItem, clickedMenuItem.originData);
+            callFunc(this.props.onSelectItem, clickedMenuItem.originData, e);
         }
     }
 
