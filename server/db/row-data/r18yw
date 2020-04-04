@@ -1,0 +1,1 @@
+<h1>插入图片</h1><div><ul><li>点击右上方图片按钮插入图片。</li><li>双击图片即可调整大小。</li></ul></div><div><img src="http://localhost:4201/note-iamge/test.png" data-size="0" style="width: calc(100% - 10px);"></div>
