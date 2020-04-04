@@ -48,8 +48,10 @@ export default asSubscriber(class NotesEditor extends React.PureComponent {
 
     onSelectContextMenu = itm => {
         if (itm.command === COMMAND_OPEN_LINK) {
-            window.open(itm.href);
-            return;
+            return window.open(itm.href);
+        }
+        if (itm.command === 'rate') {
+            return window.open('https://github.com/BingLee1994/react-mac-notes-app');
         }
         this._exec(itm.command, itm.data||'');
     }

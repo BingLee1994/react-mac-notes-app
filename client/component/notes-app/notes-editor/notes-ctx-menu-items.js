@@ -1,5 +1,6 @@
 
 import EditorEventType from './editor-event-type';
+//TODO 挪到i18n
 export default [{
         text: '剪切',
         command: EditorEventType.cut
@@ -16,7 +17,7 @@ export default [{
         divider: true
     },
     {
-        text: '点赞',
+        text: '鼓励作者？前往github点赞☆',
         command: 'rate'
     }
 ]
