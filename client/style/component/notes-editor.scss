@@ -23,5 +23,12 @@
         span {
             font-size: var(--font-size-normal);
         }
+
+        img {
+            display: inline-block;
+            margin: 5px;
+            width: calc(100% - 11px);
+            cursor: pointer;
+        }
     }
 }

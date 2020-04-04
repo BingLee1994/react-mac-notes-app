@@ -6,6 +6,12 @@
   overflow: hidden;
   height: 100%;
   box-sizing: border-box;
+  .folder-empty {
+    text-align: center;
+    padding: 10px;
+    opacity: .5;
+    font-style: italic;
+  }
   .notes-folder-list {
     cursor: default;
     flex: 1;
@@ -31,8 +37,12 @@
     }
   }
   .new-folder-button {
+    box-sizing: border-box;
     line-height: 1.5;
     flex-shrink: 0;
     padding: #{$paddingV} #{$paddingH};
+  }
+  .list-item-selected {
+    background-color: var(--translucent-accent-color-on-blur);
   }
 }

@@ -1,6 +1,13 @@
 .mc {
   &-button {
+    $normalButtonWidth: 40px;
     $widenButtonWidth: 80px;
+    $borderColor: rgba(216, 216, 216, 0.9) rgba(209, 209, 209, 0.9) rgba(163, 163, 163, 0.9) rgba(199, 199, 199, 0.9);
+    $lineHeight: 2.4rem;
+
+    min-width: $normalButtonWidth;
+    height: $lineHeight;
+
     @mixin emptyButton {
       border-width: 1px;
       border-style: solid;
@@ -20,12 +27,11 @@
 
     @include emptyButton;
     background: $bgColor;
-    box-sizing: border-box;
-    padding: $buttonPadding;
-    line-height: 1;
-    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(163, 163, 163)
-      rgb(199, 199, 199);
+    padding: 0, #{$buttonPadding};
+    line-height: calc(#{$lineHeight} - 2px);
+    border-color: $borderColor;
     font-size: $buttonFontSize;
+    box-sizing: border-box;
     outline: none;
 
     &_widen {
@@ -36,7 +42,7 @@
       background: var(--accent-color);
       color: white !important;
       &:active {
-          filter: brightness(.9);
+        filter: brightness(0.9);
       }
     }
 
@@ -45,10 +51,11 @@
       background-color: var(--accent-color-on-blur) !important;*/
       cursor: not-allowed;
       pointer-events: none;
-      opacity: .3;
+      opacity: 0.3;
     }
 
-    &:active, &_active {
+    &:active,
+    &_active {
       background: rgb(230, 230, 230);
       color: var(--text-color-primary);
     }
@@ -62,8 +69,21 @@
       $dividerColor: rgb(221, 221, 221);
 
       @include emptyButton;
-      border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(163, 163, 163)
-        rgb(199, 199, 199);
+      border: none;
+      position: relative;
+
+      &::after {
+        content: "";
+        border-radius: $borderRadius;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border: 1px solid;
+        border-color: $borderColor;
+        pointer-events: none;
+      }
 
       #{$btnSelector} {
         border-radius: 0;
@@ -79,12 +99,30 @@
 
   &-option-button-wrapper {
     flex-shrink: 0;
+    .option-button {
+      position: relative;
+      padding-right: 17px;
+      &::after {
+        position: absolute;
+        content: "";
+        font-family: mnf;
+        font-size: 15px;
+        width: 15px;
+        height: 10px;
+        display: inline-block;
+        transform: translateY(-50%) scale(0.25);
+        right: 2px;
+        top: 50%;
+        transform-origin: center;
+        color: inherit;
+      }
+    }
   }
 }
 
 .dialog-button {
   &:active {
-      background: var(--accent-color);
-      color: white !important;
+    background: var(--accent-color);
+    color: white !important;
   }
 }

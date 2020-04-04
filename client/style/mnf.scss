@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "mnf";
+    src: url(../assets/font/mnf/mnf.woff2);
+    src: url(../assets/font/mnf/mnf.eot) format('embedded-opentype'),
+      url(../assets/font/mnf/mnf.woff) format('woff'),
+      url(../assets/font/mnf/mnf.ttf) format('truetype'),
+      url(../assets/font/mnf/mnf.svg) format('svg');
+}
+
+.mnf {
+    font-family: mnf !important;
+}

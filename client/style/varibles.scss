@@ -15,7 +15,7 @@ $txtSizeS: 1rem;
 $txtSizeN: 1.3rem;
 $txtSizeExLarge: 2.3rem;
 $borderRadius: 5px;
-$buttonHeight: 2.2rem;
+$buttonHeight: 2.4rem;
 $buttonFontSize: 1.3rem;
 $buttonPadding: ($buttonHeight - $buttonFontSize) / 2;
 
@@ -38,7 +38,7 @@ $windowActionButtonSize: 1.2rem;
 $windowActionButtonBorderRadius: $windowActionButtonSize / 2;
 $maxWindowActionWrapperWidth: 6rem;
 
-#app {
+.app {
     //TODO dark mode
     --accent-color: #{$accentColor};
     --translucent-accent-color: #{$translucentAccentColor};

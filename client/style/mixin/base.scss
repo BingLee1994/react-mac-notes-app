@@ -23,3 +23,12 @@
     overflow-x: hidden;
     white-space: nowrap;
 }
+
+@mixin abs($t: initial,$r: initial,$b: initial,$l: initial){
+    position: absolute;
+    left: $l;
+    top:$t;
+    right: $r;
+    bottom: $b;
+    @content;
+}
