@@ -1,4 +1,4 @@
 import React from 'react';
 
-const SimpleLoading = <div className="loading">加载中....</div>
+const SimpleLoading = <div className="simple-fullscreen-loading"></div>
 export default SimpleLoading;
