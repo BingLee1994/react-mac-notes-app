@@ -102,23 +102,27 @@ function showDialog(component) {
         return Promise.reject();
     }
     return new Promise((resolve, reject) => {
-        let hide = () => { 
+        let hide = () => {
             ReactDOM.unmountComponentAtNode(elConfirmWrapper);
             dialogIsShowing = false;
         };
 
+        let result = null, err = false;
+
         let newProps = {
             onConfirm() {
                 callFunc(component.props.onConfirm, ...arguments);
-                resolve(arguments[0]);
+                result = arguments[0];
             },
             onCancel() {
                 callFunc(component.props.onCancel, ...arguments);
-                reject(arguments[0]);
+                err = true;
+                result = arguments[0];
             },
             onCloseComplete() {
                 callFunc(component.props.onCloseComplete, ...arguments);
                 hide();
+                return err? reject(result): resolve(result);
             }
         }
         let dialog = React.cloneElement(component, newProps);
