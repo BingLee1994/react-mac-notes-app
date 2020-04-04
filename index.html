@@ -6,6 +6,14 @@
 		<meta name="author" content="DESTINY 〆"/>
 		<link rel="icon" href="assets/img/ic-app.png" sizes="32x32">
 		<link rel="bookmark" href="/assets/img/ic-app.png" />
+		<script type="text/javascript">
+			if(window.navigator.userAgent.indexOf("Chrome") === -1 ||
+				window.navigator.userAgent.indexOf('Edge/') > -1
+			) {
+				alert('请使用Chrome或者类Chrome内核浏览器打开此网站（'+location.href+'）');
+				window.close();
+			}
+		</script>
 	</head>
 	<body class="app">
 		<div id="root"></div>
