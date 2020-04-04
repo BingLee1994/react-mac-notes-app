@@ -19,13 +19,18 @@ export { Divider };
 
 let validator = [Button, SingleChoiceBtnGroup, ButtonGroup, OptionButton, Divider]
 
-function filterChildren(children) {
+function filterChildren(children, allowTag=[]) {
     let valid = [];
     (children || []).forEach(child => {
-        isObject(child) &&
-        child.type &&
-        validator.some((validType) => child.type === validType) &&
-        valid.push(child);
+        if(isObject(child)) {
+            child.type &&
+            (
+                validator.some((validType) => child.type === validType) ||
+                allowTag.some((validType) => child.type === validType)
+            ) &&
+            valid.push(child);
+            return;
+        }
     });
     return valid;
 }
@@ -44,7 +49,7 @@ export default React.memo(props => {
             <div className="content-wrapper">
                 {title && <p className="title">{title}</p>}
                 <div className="action-buttons-wrapper">
-                    {filterChildren(props.children)}
+                    {filterChildren(props.children, props.allowTag)}
                 </div>
             </div>
         </div>
