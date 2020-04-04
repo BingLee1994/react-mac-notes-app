@@ -59,7 +59,8 @@ const i18nData = {
             deleteNoteAlertTitle: '确定删除吗？',
             deleteNoteAlert: '将会永久删除此内容！',
             nameExist: '文件名已经存在！',
-            plsInputFolderName: '请输入文件夹名'
+            plsInputFolderName: '请输入文件夹名',
+            plsInputLink: '请输入链接'
         }
 
     },
