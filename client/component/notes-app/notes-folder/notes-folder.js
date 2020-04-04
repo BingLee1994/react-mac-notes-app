@@ -100,6 +100,7 @@ class NotesFolder extends React.PureComponent {
             try {
                 this.validateFolderName(folderName)
             } catch (err) {
+                console.log(err);
                 showAlertDialog(err.message);
                 return;
             }

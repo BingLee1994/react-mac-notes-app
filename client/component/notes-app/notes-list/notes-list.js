@@ -124,6 +124,7 @@ class NotesListView extends React.PureComponent {
     async onFolderOpen(event) {
         callFunc(this.cancelRequest);
         let { currentFolder, folderList } = event.data;
+        this.state.folderList = folderList;
         if (isNone(currentFolder)) {
             this.setState({listData: []});
             return;
