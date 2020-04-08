@@ -8,6 +8,7 @@ export default React.memo(function(props) {
     let [selected, setSelected] = useState(props.selected || 0);
 
     function onSelect(e, data, index) {
+        if (index === selected) return
         setSelected(index);
         callFunc(props.onChange, e, data, index);
     }
