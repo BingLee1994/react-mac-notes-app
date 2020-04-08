@@ -2,21 +2,37 @@
   &-button {
     $normalButtonWidth: 40px;
     $widenButtonWidth: 80px;
-    $borderColor: rgba(216, 216, 216, 0.9) rgba(209, 209, 209, 0.9) rgba(163, 163, 163, 0.9) rgba(199, 199, 199, 0.9);
+    $borderColor: rgba(0, 0, 0, .17);
+    $borderBottomColor: rgba(0, 0, 0, .2);
     $lineHeight: 2.4rem;
 
     min-width: $normalButtonWidth;
     height: $lineHeight;
 
-    @mixin emptyButton {
+    &::before {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: $borderRadius;
       border-width: 1px;
       border-style: solid;
+      border-color: $borderColor;
+      border-bottom-color: $borderBottomColor;
+    }
+
+    @mixin emptyButton {
       display: inline-block;
       overflow: hidden;
       border-radius: $borderRadius;
       margin: $marginX;
       flex-shrink: 0;
       text-align: center;
+      border: none;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
     }
 
     $borderRadius: 5px;
@@ -24,18 +40,19 @@
     -webkit-appearance: none;
     $btnSelector: &;
     $marginX: 0 4px;
+    position: relative;
 
     @include emptyButton;
     background: $bgColor;
-    padding: 0, #{$buttonPadding};
+    padding: 0 $buttonPadding;
     line-height: calc(#{$lineHeight} - 2px);
-    border-color: $borderColor;
     font-size: $buttonFontSize;
     box-sizing: border-box;
     outline: none;
 
     &_widen {
       min-width: $widenButtonWidth;
+      padding: 0 $buttonPadding*2;
     }
 
     &_tinted {
@@ -90,6 +107,9 @@
         border: none;
         margin: 0;
         border-right: 1px solid $dividerColor;
+        &::before {
+          display: none;
+        }
       }
       #{$btnSelector}:last-of-type {
         border-right: none;
